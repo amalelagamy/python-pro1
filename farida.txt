@@ -137,9 +137,7 @@ def Path():
             path = path.split('.txt')
             path = path[0]
             path = ''.join([path,'Analysis'])
-            path = '.'.join([path,'txt'])
-
-            
+            path = '.'.join([path,'txt']
                                                         
             break
             
@@ -163,7 +161,6 @@ def Initialize():
         except:
             
             print('\nPlease insert a valid option [1 or 2]')
-
 
 Initialize()
 
