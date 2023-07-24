@@ -1,0 +1,188 @@
+# This code to count words, characters, blank space and the percentage of blank spaces.
+
+# This class is for analyzing file text
+class Analyze:
+    # This method is to count how many words are in the input file text
+    def Total_words(self, Input):
+        # Open the file that user has inputted as variable File
+        with open(Input) as File:
+            # Read through the lines of the file and assign it to list Read
+            Read = File.readlines()
+            # Assign count_words to 0 for later counting
+            count_words = 0
+            # Iterate through the lines
+            for sentence in Read:
+                # Remove any spaces at the end of the sentence
+                clean = sentence.rstrip()
+                # Split between the words by a space
+                words = clean.split()
+                # This loop will continue if there is a empty line 
+                if words == []:
+                    continue
+                # This loop is for counting the words in list words
+                for word in words:
+                    # Start adding 1 each time there is a word
+                    count_words += 1
+        # Return the value of count_words
+        return count_words
+    
+    # This method is to count the occurrences of the same word
+    def Total_words_occurancy(self, Input):
+        # Open the file that user has inputted as variable File
+        with open(Input) as File:
+            # Read through the lines of the file and assign it to list Read
+            Read = File.readlines()
+            # Set an empty dictionary for later use assigned to Dic
+            Dic = dict()
+            # Iterate through the lines
+            for sentence in Read:
+                # Remove any spaces at the end of the sentence
+                clean = sentence.rstrip()
+                # Split between the words by a space
+                words = clean.split()
+                # This loop will continue if there is a empty line
+                if words == []:
+                    continue
+                # This loop is to check how many did the same word repeated
+                for word in words:
+                    # If the word exists in the dictionary Dic
+                    if word in Dic:
+                        # Add 1 to the assigned existed word
+                        Dic[word] += 1
+                    # Else, it will assign it to 1    
+                    else:
+                        Dic[word] = 1
+        # Return the dictionary Dic
+        return Dic
+    # This method will count the characters in the file not including the spaces
+    def Total_characters(self, Input):
+        # Open the file that user has inputted as variable File
+        with open(Input) as File:
+            # Read through the lines of the file and assign it to list Read
+            Read = File.readlines()
+            # Assign count_char to 0 for later counting
+            count_char = 0
+            # Iterate through the lines
+            for sentence in Read:
+                # Remove any spaces at the end of the sentence
+                clean = sentence.rstrip()
+                # Split between the words by a space
+                words = clean.split()
+                # This loop will continue if there is a empty line
+                if words == []:
+                    continue
+                # This loop will split the words by space
+                for word in words:
+                    word = word.split()
+                    # This loop will iterate through word
+                    for letter in word:
+                        # This loop will count the characters in the variable letter
+                        for char in letter:
+                            # Add 1 to count_char
+                            count_char += 1
+            # Return count_char
+            return count_char
+    # This method will count the empty space and lines
+    def Total_blank(self, Input):
+        # Open the file that user has inputted as variable File
+        with open(Input) as File:
+            # Read through the lines of the file and assign it to list Read
+            Read = File.readlines()
+            # Assign count_blank to 0 for later counting
+            count_blank = 0
+            # Iterate through the lines
+            for sentence in Read:
+                # Count the blank spaces in the sentence and assign to Blank_spaces
+                Blank_spaces = sentence.count(' ')
+                # Add the number of the Blank_spaces to the variable count_blank
+                count_blank += Blank_spaces
+                # Assign a boolean to the variable Blank_lines if there is space
+                Blank_lines = sentence.isspace()
+                # If Blank_lines is True
+                if Blank_lines:
+                    #Add 1 to count_blank
+                    count_blank += 1
+            # Return the value of count_blank
+            return count_blank
+
+# This class will count the percentage of the blank spaces in the text file
+class Blank_average:
+
+    def average(self, count_blank, count_char):
+        # Return percentage value of the blank spaces
+        return (count_blank / count_char) * 100
+        
+
+Start = Analyze()
+
+# The function Path() will start analyzing the file text 
+
+def Path():
+
+    global path, W, O, Char, Blank
+
+    while True:
+        
+        path = input('\nPlease insert your text file path here to start analyzing: ')
+
+        try:
+            
+            W = Start.Total_words(path)
+            O = Start.Total_words_occurancy(path)
+            Char = Start.Total_characters(path)
+            Blank = Start.Total_blank(path)
+            
+            path = path.split('\\')
+            path = path[-1]
+            path = path.split('.txt')
+            path = path[0]
+            path = ''.join([path,'Analysis'])
+            path = '.'.join([path,'txt'])
+
+            
+                                                        
+            break
+            
+        except:
+            print("\nI did not find your text file path, please make sure\nit looks like this: C:\\Users\\Ayman\\Downloads\\Programing\\Python\\text.txt")
+
+
+Path()
+
+#The function Initialize() will ask the user if he wants to complete the full process
+
+def Initialize():
+    global Init   
+    while True:
+        
+        try:
+            
+            Init = int(input('\n1 - Start the process\n2 - Exit without processing any text files\n[1 or 2]: '))
+            break
+        
+        except:
+            
+            print('\nPlease insert a valid option [1 or 2]')
+
+
+Initialize()
+
+while True:
+    # If the user inputed 1 it will complete the process
+    if Init == 1:
+
+        Output = open(path,'w')
+        Output.write(f"File Analyzation Report\n\nThe total number of words : {W}\n\nThe total number of characters : {Char}\n\nThe total number of blank spaces and lines : {Blank}\n\nThe percentage of blank spaces is : {(Blank / Char)*100:.2f} %\n\nTo find the desired word occurrences press (Ctrl + f) then type \nthe desired word in single qoutes : 'desired word'\n\nThe number of occurance for the same words : \n\n{O}")
+        Output.close()
+        print('\nFile Analyzation Is Done')
+        print(f'Your file is located in the same place where your progame is\nFile name : {Output.name}')
+
+        break
+    # If the inputted 2 it will not complete the process
+    elif Init == 2:
+        break
+    
+    # If the user inputted an invalid it will recall the function Initialze()
+    else:
+        print('\nPlease insert a valid option [1 or 2]')
+        Initialize()
